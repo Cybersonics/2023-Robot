@@ -51,8 +51,8 @@ public class RobotContainer {
     CommandScheduler.getInstance()
     .setDefaultCommand(_arm, new ArmCommand(_arm, opController));
     
-   // CommandScheduler.getInstance()
-    //.setDefaultCommand(_intake, new IntakeCommand(_intake, opController));
+   CommandScheduler.getInstance()
+    .setDefaultCommand(_intake, new IntakeCommand(_intake, opController));
 
     // Configure Autonomous Options
     autonomousOptions();
@@ -98,7 +98,7 @@ public class RobotContainer {
    */
   private void autonomousOptions() {
     // Example adding Autonomous option to chooser
-    m_chooser.addOption("Example", Autos.exampleAuto(m_exampleSubsystem));
+    //m_chooser.addOption("Example", Autos.exampleAuto(m_exampleSubsystem));
 
     // Put the chooser on the dashboard
     SmartDashboard.putData(m_chooser);
