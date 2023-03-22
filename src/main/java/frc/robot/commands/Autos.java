@@ -41,13 +41,13 @@ public final class Autos {
     return new DoNothingCommand();
   }
 
-  public static CommandBase centerRamp(Drive drive, NavXGyro gyro) {
+  public static CommandBase centerRamp(Drive drive, NavXGyro gyro, Arm arm, Intake intake) {
 
     // PathPlannerTrajectory pathTrajectory = PathPlanner.loadPath("Center-Ramp", 5,
     // 3);
 
     List<PathPlannerTrajectory> pathTrajectoryGroup = PathPlanner.loadPathGroup("Center-Ramp",
-        new PathConstraints(1, 1), new PathConstraints(2, 2), new PathConstraints(5, 3));
+        new PathConstraints(1, 1), new PathConstraints(2, 1), new PathConstraints(5, 3));
     PPSwerveControllerCommand cubeDropDriveCommand = getTrajectoryCommand(pathTrajectoryGroup.get(0), false, drive);
     PPSwerveControllerCommand overRampDriveCommand = getTrajectoryCommand(pathTrajectoryGroup.get(1), false, drive);
     PPSwerveControllerCommand backToRampDriveCommand = getTrajectoryCommand(pathTrajectoryGroup.get(2), false, drive);
@@ -58,17 +58,69 @@ public final class Autos {
           drive.resetOdometry(pathTrajectoryGroup.get(0).getInitialHolonomicPose());
         }),
         cubeDropDriveCommand,
-        overRampDriveCommand,
+        new ParallelCommandGroup(
+          overRampDriveCommand,
+            new ArmPositionCommand(arm, ArmConstants.armShoulderPosition, ArmConstants.armExtensionPosition, 3),
+            new IntakeConeCommand(intake, false, 3.5)),
         backToRampDriveCommand,
         new DriveBalanceCommand(drive, gyro));
   }
 
-  public static CommandBase barrierConeRamp(Drive drive, NavXGyro gyro, Intake intake, Arm arm) {
+  public static CommandBase blueBarrierConeRamp(Drive drive, NavXGyro gyro, Intake intake, Arm arm) {
 
     // PathPlannerTrajectory pathTrajectory = PathPlanner.loadPath("Center-Ramp", 5,
     // 3);
 
     List<PathPlannerTrajectory> pathTrajectoryGroup = PathPlanner.loadPathGroup("Barrier-K-Ramp",
+        new PathConstraints(1, 1), new PathConstraints(3, 3), new PathConstraints(5, 3));
+    PPSwerveControllerCommand cubeDropDriveCommand = getTrajectoryCommand(pathTrajectoryGroup.get(0), false, drive);
+    PPSwerveControllerCommand exitCommunityDriveCommand = getTrajectoryCommand(pathTrajectoryGroup.get(1), false,
+        drive);
+    PPSwerveControllerCommand backToRampDriveCommand = getTrajectoryCommand(pathTrajectoryGroup.get(2), false, drive);
+
+    return new SequentialCommandGroup(
+        new InstantCommand(() -> {
+          // Reset odometry for the first path you run during auto
+          drive.resetOdometry(pathTrajectoryGroup.get(0).getInitialHolonomicPose());
+        }),
+        cubeDropDriveCommand,
+        new ParallelCommandGroup(
+          exitCommunityDriveCommand,
+            new ArmPositionCommand(arm, ArmConstants.armShoulderPosition, ArmConstants.armExtensionPosition, 3),
+            new IntakeConeCommand(intake, false, 3.5)),
+        backToRampDriveCommand,
+        new DriveBalanceCommand(drive, gyro));
+  }
+
+  public static CommandBase barrierCone(Drive drive, NavXGyro gyro, Intake intake, Arm arm) {
+
+    // PathPlannerTrajectory pathTrajectory = PathPlanner.loadPath("Center-Ramp", 5,
+    // 3);
+
+    List<PathPlannerTrajectory> pathTrajectoryGroup = PathPlanner.loadPathGroup("Barrier-K-Ramp",
+        new PathConstraints(1, 1), new PathConstraints(3, 3));
+    PPSwerveControllerCommand cubeDropDriveCommand = getTrajectoryCommand(pathTrajectoryGroup.get(0), false, drive);
+    PPSwerveControllerCommand exitCommunityDriveCommand = getTrajectoryCommand(pathTrajectoryGroup.get(1), false,
+        drive);
+    
+    return new SequentialCommandGroup(
+        new InstantCommand(() -> {
+          // Reset odometry for the first path you run during auto
+          drive.resetOdometry(pathTrajectoryGroup.get(0).getInitialHolonomicPose());
+        }),
+        cubeDropDriveCommand,
+        new ParallelCommandGroup(
+          exitCommunityDriveCommand,
+            new ArmPositionCommand(arm, ArmConstants.armShoulderPosition, ArmConstants.armExtensionPosition, 3),
+            new IntakeConeCommand(intake, false, 3.5)));
+  }
+
+  public static CommandBase redBarrierConeRamp(Drive drive, NavXGyro gyro, Intake intake, Arm arm) {
+
+    // PathPlannerTrajectory pathTrajectory = PathPlanner.loadPath("Center-Ramp", 5,
+    // 3);
+
+    List<PathPlannerTrajectory> pathTrajectoryGroup = PathPlanner.loadPathGroup("Red-Barrier-K-Ramp",
         new PathConstraints(1, 1), new PathConstraints(3, 3), new PathConstraints(5, 3));
     PPSwerveControllerCommand cubeDropDriveCommand = getTrajectoryCommand(pathTrajectoryGroup.get(0), false, drive);
     PPSwerveControllerCommand exitCommunityDriveCommand = getTrajectoryCommand(pathTrajectoryGroup.get(1), false,
@@ -115,7 +167,7 @@ public final class Autos {
         new DriveBalanceCommand(drive, gyro));
   }
 
-  public static CommandBase cableDriveStraight(Drive drive) {
+  public static CommandBase cableDriveStraight(Drive drive, Arm arm, Intake intake) {
 
     // Generate trajectory
     // PathPlannerTrajectory pathTrajectory = PathPlanner.loadPath("Cable-Straight",
@@ -134,7 +186,11 @@ public final class Autos {
         }),
         cubeJigCommand,
         beforeCableDriveCommand,
-        afterCableDriveCommand);
+        new ParallelCommandGroup(
+          afterCableDriveCommand,
+            new ArmPositionCommand(arm, ArmConstants.armShoulderPosition, ArmConstants.armExtensionPosition, 3),
+            new IntakeConeCommand(intake, false, 3.5))       
+        );
   }
 
   public static CommandBase barrierDriveStraight(Drive drive) {

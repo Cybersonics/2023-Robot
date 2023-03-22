@@ -56,7 +56,7 @@ public class DriveBalanceCommand extends CommandBase {
         balanceContoller.setP(BalanceP);
         balanceContoller.setI(BalanceI);
         balanceContoller.setD(BalanceD);
-        balanceContoller.setTolerance(1.5);
+        balanceContoller.setTolerance(1.25);
     }
 
     // Called every time the scheduler runs while the command is scheduled.

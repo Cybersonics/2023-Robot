@@ -58,16 +58,16 @@ public final class Constants {
   public static class DriveConstants {
     public static final int FrontLeftSteer = 11;
     public static final int FrontLeftDrive = 1;
-    public static final int FrontLeftEncoderOffset = -1;
+    public static final int FrontLeftEncoderOffset = 0;
     public static final int FrontRightSteer = 14;
     public static final int FrontRightDrive = 4;
-    public static final int FrontRightEncoderOffset = 12;
+    public static final int FrontRightEncoderOffset = 0;
     public static final int BackLeftSteer = 12;
     public static final int BackLeftDrive = 2;
-    public static final int BackLeftEncoderOffset = -5;
+    public static final int BackLeftEncoderOffset = 0;
     public static final int BackRightSteer = 13;
     public static final int BackRightDrive = 3;
-    public static final int BackRightEncoderOffset = 10;
+    public static final int BackRightEncoderOffset = 0;
 
     public static final class ModuleConstants {
       public static final double kWheelDiameterMeters = Units.inchesToMeters(4);

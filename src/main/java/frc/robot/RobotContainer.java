@@ -114,11 +114,13 @@ public class RobotContainer {
   private void autonomousOptions() {
     // Example adding Autonomous option to chooser
     m_chooser.addOption("Do Nothing", Autos.doNothing());
-    m_chooser.addOption("Cable Straight", Autos.cableDriveStraight(_drive));
-    m_chooser.addOption("Center Ramp", Autos.centerRamp(_drive, _gyro));
+    m_chooser.addOption("Cable Straight", Autos.cableDriveStraight(_drive, _arm, _intake));
+    m_chooser.addOption("Center Ramp", Autos.centerRamp(_drive, _gyro, _arm, _intake));
     m_chooser.addOption("Barrier Straight", Autos.barrierDriveStraight(_drive));
-    m_chooser.addOption("Barrier Cone Ramp", Autos.barrierConeRamp(_drive, _gyro, _intake, _arm));
-    m_chooser.addOption("Barrier Cube Ramp", Autos.barrierCubeRamp(_drive, _gyro, _intake, _arm));
+    m_chooser.addOption("Barrier Cone", Autos.barrierCone(_drive, _gyro, _intake, _arm));
+    m_chooser.addOption("Blue Barrier Cone Ramp", Autos.blueBarrierConeRamp(_drive, _gyro, _intake, _arm));
+    // m_chooser.addOption("Red Barrier Cone Ramp", Autos.redBarrierConeRamp(_drive, _gyro, _intake, _arm));
+    // m_chooser.addOption("Blue Barrier Cube Ramp", Autos.barrierCubeRamp(_drive, _gyro, _intake, _arm));
 
     // Put the chooser on the dashboard
     SmartDashboard.putData(m_chooser);
