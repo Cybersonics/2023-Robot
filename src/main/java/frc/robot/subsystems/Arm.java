@@ -89,7 +89,7 @@ public class Arm extends SubsystemBase {
         
         shoulderMotor.setIdleMode(IdleMode.kBrake);
         shoulderMotor.setInverted(true);
-        shoulderMotor.setOpenLoopRampRate(2);
+        shoulderMotor.setOpenLoopRampRate(.5);
         //shoulderMotor.setSmartCurrentLimit(ArmConstants.kshoulderMotorCurrentLimit);
         
         extensionMotor.setIdleMode(IdleMode.kBrake);

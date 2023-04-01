@@ -34,7 +34,7 @@ public class ArmControllerCommand extends CommandBase {
         }
 
         if(Math.abs(_controller.getLeftY()) >= .07) {
-            _arm.shoulderMove(_controller.getLeftY()*.5);
+            _arm.shoulderMove(_controller.getLeftY()*.7);
         } else {
             _arm.shoulderMove(0);
         }

@@ -54,13 +54,9 @@ public class ArmPositionCommand extends CommandBase {
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
-        SmartDashboard.putNumber("expected Shoulder Position", _expectedShoulderPosition);
-        SmartDashboard.putNumber("expected Extension Position", _expectedExtensionPosition);
-
         if (_expectedShoulderPosition > ArmConstants.shoulderEncoderBottom
                 && _expectedShoulderPosition < ArmConstants.shoulderEncoderMax) {
-            System.out
-                    .println("going to shoulder position: " + _expectedShoulderPosition + " at " + _arm.getAbsArmPos());
+            //System.out.println("going to shoulder position: " + _expectedShoulderPosition + " at " + _arm.getAbsArmPos());
             double calculatedChange = _shoulderPIDController.calculate(_arm.getAbsArmPos(), _expectedShoulderPosition);
             double speed = MathUtil.clamp(calculatedChange, -1, 1);
 
