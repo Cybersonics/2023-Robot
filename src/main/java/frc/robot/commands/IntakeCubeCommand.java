@@ -32,11 +32,11 @@ public class IntakeCubeCommand extends CommandBase {
     public void execute() {
         if (_isOut) {
             // if (_intake.getOutputCurrent() < 15) {
-                _intake.intakeMove(-.5);
+                _intake.intakeMove(-.7);
             // }
         } else if (!_isOut) {
             // if (_intake.getOutputCurrent() < 15) {
-                _intake.intakeMove(.5);
+                _intake.intakeMove(.7);
             // }
         }
     }
