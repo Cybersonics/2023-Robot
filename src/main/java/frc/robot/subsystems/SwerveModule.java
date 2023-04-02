@@ -53,7 +53,8 @@ public class SwerveModule extends SubsystemBase {
 
   // private double loopCounter = 0;
   // private static final double MAXSTEERERROR = 5;
-  private static final double STEER_P = 3.0, STEER_I = 0.0, STEER_D = 0.1;
+  //private static final double STEER_P = 3.0, STEER_I = 0.0, STEER_D = 0.1;
+  private static final double STEER_P = 6.0, STEER_I = 0.0, STEER_D = 0.2;
   private static final int STATUS_FRAME_PERIOD = 5;
 
   public double encoderCountPerRotation = 1024;

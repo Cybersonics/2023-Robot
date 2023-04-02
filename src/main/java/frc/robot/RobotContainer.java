@@ -116,7 +116,7 @@ public class RobotContainer {
     m_chooser.addOption("Do Nothing", Autos.doNothing());
     m_chooser.addOption("Cable Straight", Autos.cableDriveStraight(_drive, _arm, _intake));
     m_chooser.addOption("Center Ramp", Autos.centerRamp(_drive, _gyro, _arm, _intake));
-    m_chooser.addOption("Barrier Straight", Autos.barrierDriveStraight(_drive));
+    //m_chooser.addOption("Barrier Straight", Autos.barrierDriveStraight(_drive));
     m_chooser.addOption("Far Barrier Cube Score", Autos.farBarrierCubeScoreLow(_drive, _intake, _arm));
     m_chooser.addOption("Barrier Cone", Autos.barrierCone(_drive, _gyro, _intake, _arm));
     m_chooser.addOption("Blue Barrier Cone Ramp", Autos.blueBarrierConeRamp(_drive, _gyro, _intake, _arm));
