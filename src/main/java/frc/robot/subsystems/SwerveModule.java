@@ -68,7 +68,8 @@ public class SwerveModule extends SubsystemBase {
 		driveMotor.restoreFactoryDefaults();
 		driveMotor.setInverted(invertDrive);// setInverted reverses the both the motor and the encoder direction.
 		driveMotor.setOpenLoopRampRate(RAMP_RATE);// This provides a motor ramp up time to prevent brown outs.
-		driveMotor.setIdleMode(IdleMode.kCoast);
+		//driveMotor.setIdleMode(IdleMode.kCoast);
+    driveMotor.setIdleMode(IdleMode.kBrake);
     driveMotor.setSmartCurrentLimit(55);
  
 

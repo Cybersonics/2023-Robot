@@ -165,6 +165,9 @@ public final class Autos {
   // }
 
   public static CommandBase farBarrierCubeScoreLow(Drive drive, Intake intake, Arm arm) {
+    // set drive to brake mode to stop before half court.
+    drive.setDriveModeBrake();
+    
     String path = "Blue-Far-Barrier-Two";
     // DriverStation.Alliance alliance = DriverStation.getAlliance();
     // if (alliance == DriverStation.Alliance.Red) {
@@ -178,8 +181,7 @@ public final class Autos {
       drive);
     PPSwerveControllerCommand backToScoreDriveCommand = getTrajectoryCommand(pathTrajectoryGroup.get(2), true, drive);
 
-    // set drive to brake mode to stop before half court.
-    drive.setDriveModeBrake();
+
 
     return new SequentialCommandGroup(
 
@@ -197,8 +199,12 @@ public final class Autos {
         driveSecondCubeCommand,
         new ArmPositionCommand(arm, ArmConstants.armShoulderPosition, ArmConstants.armExtensionPosition, 3),
         new IntakeCubeCommand(intake, false, 4)),
-      backToScoreDriveCommand,
-      new ArmPositionCommand(arm, ArmConstants.armShoulderPosition + 50, ArmConstants.armExtensionPosition, 3),
+      // backToScoreDriveCommand,
+      // new ArmPositionCommand(arm, ArmConstants.armShoulderPosition, ArmConstants.armExtensionPosition, 3),
+        new ParallelCommandGroup(
+          backToScoreDriveCommand,
+          // Down is up for should positions
+          new ArmPositionCommand(arm, ArmConstants.armShoulderPosition - 30, ArmConstants.extensionEncoderIn, 2)),
       new IntakeCubeCommand(intake, true, 2)
     );
   }
