@@ -381,7 +381,7 @@ public class Drive extends SubsystemBase {
 		backRight.setDesiredState(desiredStates[3]);
 	}
 
-	private boolean isCoastMode = true;
+	private boolean isCoastMode = false;
 	public boolean toggleMode() {
 		return isCoastMode;
 	}

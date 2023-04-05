@@ -22,7 +22,7 @@ public class DriveBalanceCommand extends CommandBase {
     public static final double DEADZONE_LSTICK = 0.07;
     private static final double DEADZONE_RSTICK = 0.07;
 
-    private static final double BalanceP = 0.008;
+    private static final double BalanceP = 0.0085;
     private static final double BalanceI = 0;
     private static final double BalanceD = 0;
     private PIDController balanceContoller;
@@ -56,7 +56,7 @@ public class DriveBalanceCommand extends CommandBase {
         balanceContoller.setP(BalanceP);
         balanceContoller.setI(BalanceI);
         balanceContoller.setD(BalanceD);
-        balanceContoller.setTolerance(1.25);
+        balanceContoller.setTolerance(1);
     }
 
     // Called every time the scheduler runs while the command is scheduled.

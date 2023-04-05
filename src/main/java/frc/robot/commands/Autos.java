@@ -49,7 +49,7 @@ public final class Autos {
     // 3);
 
     List<PathPlannerTrajectory> pathTrajectoryGroup = PathPlanner.loadPathGroup("Center-Ramp",
-        new PathConstraints(1, 1), new PathConstraints(1.5, 1), new PathConstraints(5, 3));
+        new PathConstraints(1, 1), new PathConstraints(1, 1), new PathConstraints(1.5, 1));
     PPSwerveControllerCommand cubeDropDriveCommand = getTrajectoryCommand(pathTrajectoryGroup.get(0), true, drive);
     PPSwerveControllerCommand overRampDriveCommand = getTrajectoryCommand(pathTrajectoryGroup.get(1), true, drive);
     PPSwerveControllerCommand backToRampDriveCommand = getTrajectoryCommand(pathTrajectoryGroup.get(2), true, drive);
@@ -69,6 +69,39 @@ public final class Autos {
       cubeDropDriveCommand,
       overRampDriveCommand,
       backToRampDriveCommand,
+      new DriveBalanceCommand(drive, gyro)
+    );
+  }
+
+  public static CommandBase centerRampCube(Drive drive, NavXGyro gyro, Arm arm, Intake intake) {
+
+    // PathPlannerTrajectory pathTrajectory = PathPlanner.loadPath("Center-Ramp", 5,
+    // 3);
+
+    List<PathPlannerTrajectory> pathTrajectoryGroup = PathPlanner.loadPathGroup("Center-Ramp-Cube",
+        new PathConstraints(1, 1.25), new PathConstraints(2, 1.5));
+    PPSwerveControllerCommand overRampDriveCommand = getTrajectoryCommand(pathTrajectoryGroup.get(0), true, drive);
+    PPSwerveControllerCommand backToRampDriveCommand = getTrajectoryCommand(pathTrajectoryGroup.get(1), true, drive);
+
+    return new SequentialCommandGroup(
+
+      new InstantCommand(() -> {
+        // Reset odometry for the first path you run during auto
+        drive.resetOdometryForState(pathTrajectoryGroup.get(0).getInitialState());
+      }),
+
+      // new InstantCommand(() -> {
+      //   // Reset odometry for the first path you run during auto
+      //   drive.resetOdometry(pathTrajectoryGroup.get(0).getInitialHolonomicPose());
+      // }),
+
+      overRampDriveCommand,
+      new ParallelCommandGroup(
+        new ArmPositionCommand(arm, ArmConstants.armShoulderPosition, ArmConstants.armExtensionPosition, 2),
+        new IntakeCubeCommand(intake, false, 1.5)),
+      new ParallelCommandGroup(
+        backToRampDriveCommand,
+        new ArmPositionCommand(arm, ArmConstants.armShoulderPosition, ArmConstants.extensionEncoderIn, 2)),
       new DriveBalanceCommand(drive, gyro)
     );
   }
@@ -198,13 +231,13 @@ public final class Autos {
       new ParallelCommandGroup(
         driveSecondCubeCommand,
         new ArmPositionCommand(arm, ArmConstants.armShoulderPosition, ArmConstants.armExtensionPosition, 3),
-        new IntakeCubeCommand(intake, false, 4)),
+        new IntakeCubeCommand(intake, false, 3.5)),
       // backToScoreDriveCommand,
       // new ArmPositionCommand(arm, ArmConstants.armShoulderPosition, ArmConstants.armExtensionPosition, 3),
         new ParallelCommandGroup(
           backToScoreDriveCommand,
           // Down is up for should positions
-          new ArmPositionCommand(arm, ArmConstants.armShoulderPosition - 30, ArmConstants.extensionEncoderIn, 2)),
+          new ArmPositionCommand(arm, ArmConstants.armShoulderPosition - 20, ArmConstants.extensionEncoderIn, 2)),
       new IntakeCubeCommand(intake, true, 2)
     );
   }
