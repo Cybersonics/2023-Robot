@@ -22,7 +22,7 @@ public class DriveBalanceCommand extends CommandBase {
     public static final double DEADZONE_LSTICK = 0.07;
     private static final double DEADZONE_RSTICK = 0.07;
 
-    private static final double BalanceP = 0.0085;
+    private static final double BalanceP = 0.0082;
     private static final double BalanceI = 0;
     private static final double BalanceD = 0;
     private PIDController balanceContoller;
@@ -107,7 +107,7 @@ public class DriveBalanceCommand extends CommandBase {
     public void end(boolean interrupted) {
         this._drive.processInput(0.0, 0.0, 0.0, true, false);
         // Reset Drives back to coast mode for teleop.
-        this._drive.setDrivesMode(IdleMode.kCoast);
+        //this._drive.setDrivesMode(IdleMode.kCoast);
 
     }
 

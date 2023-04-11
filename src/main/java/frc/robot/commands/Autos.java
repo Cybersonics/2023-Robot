@@ -106,6 +106,39 @@ public final class Autos {
     );
   }
 
+  public static CommandBase centerRampCubeTest(Drive drive, NavXGyro gyro, Arm arm, Intake intake) {
+
+    // PathPlannerTrajectory pathTrajectory = PathPlanner.loadPath("Center-Ramp", 5,
+    // 3);
+
+    List<PathPlannerTrajectory> pathTrajectoryGroup = PathPlanner.loadPathGroup("Center-Ramp-Cube",
+        new PathConstraints(2, 1.5), new PathConstraints(2, 1.75));
+    PPSwerveControllerCommand overRampDriveCommand = getTrajectoryCommand(pathTrajectoryGroup.get(0), true, drive);
+    PPSwerveControllerCommand backToRampDriveCommand = getTrajectoryCommand(pathTrajectoryGroup.get(1), true, drive);
+
+    return new SequentialCommandGroup(
+
+      new InstantCommand(() -> {
+        // Reset odometry for the first path you run during auto
+        drive.resetOdometryForState(pathTrajectoryGroup.get(0).getInitialState());
+      }),
+
+      // new InstantCommand(() -> {
+      //   // Reset odometry for the first path you run during auto
+      //   drive.resetOdometry(pathTrajectoryGroup.get(0).getInitialHolonomicPose());
+      // }),
+
+      overRampDriveCommand,
+      new ParallelCommandGroup(
+        new ArmPositionCommand(arm, ArmConstants.armShoulderPosition, ArmConstants.armExtensionPosition, 2),
+        new IntakeCubeCommand(intake, false, 1.5)),
+      new ParallelCommandGroup(
+        backToRampDriveCommand,
+        new ArmPositionCommand(arm, ArmConstants.armShoulderPosition, ArmConstants.extensionEncoderIn, 2)),
+      new DriveBalanceCommand(drive, gyro)
+    );
+  }
+
   public static CommandBase blueBarrierConeRamp(Drive drive, NavXGyro gyro, Intake intake, Arm arm) {
 
     // PathPlannerTrajectory pathTrajectory = PathPlanner.loadPath("Center-Ramp", 5,
