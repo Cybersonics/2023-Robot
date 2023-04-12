@@ -19,6 +19,13 @@ import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import com.pathplanner.lib.PathPlanner;
+import com.pathplanner.lib.PathPlannerTrajectory;
+import com.pathplanner.lib.PathPlannerTrajectory.PathPlannerState;
+import com.pathplanner.lib.commands.PPSwerveControllerCommand;
+
 public class Drive extends SubsystemBase {
 
 	private static Drive instance;
@@ -105,6 +112,12 @@ public class Drive extends SubsystemBase {
 	public void resetOdometry(Pose2d pose) {
 		odometer.resetPosition(this._gyro.getRotation2d(), getPositions(), pose);
 	}
+
+	public void resetOdometryForState(PathPlannerState state) {
+		state = PathPlannerTrajectory.transformStateForAlliance(state, DriverStation.getAlliance());
+		Pose2d pose = new Pose2d(state.poseMeters.getTranslation(), state.holonomicRotation);
+		odometer.resetPosition(this._gyro.getRotation2d(), getPositions(), pose);
+	  }
 
 	public static Drive getInstance(NavXGyro gyro) {
 		if (instance == null) {
@@ -368,7 +381,7 @@ public class Drive extends SubsystemBase {
 		backRight.setDesiredState(desiredStates[3]);
 	}
 
-	private boolean isCoastMode = true;
+	private boolean isCoastMode = false;
 	public boolean toggleMode() {
 		return isCoastMode;
 	}

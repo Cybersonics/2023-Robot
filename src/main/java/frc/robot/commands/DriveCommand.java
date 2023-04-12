@@ -44,7 +44,7 @@ public class DriveCommand extends CommandBase {
         This will be used as the initial angle of the robot for field centric control.
     */
     originHeading = _navXGyro.getZeroAngle();
-    _drive.setDrivesMode(IdleMode.kCoast);
+    //_drive.setDrivesMode(IdleMode.kCoast);
   }
 
   // Called every time the scheduler runs while the command is scheduled.

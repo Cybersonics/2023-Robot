@@ -104,7 +104,7 @@ public final class Constants {
     public static int shoulderMotorCurrentLimit = 40;
 
     public static double armShoulderPosition = 318.4;
-    public static double armExtensionPosition = 1247;
+    public static double armExtensionPosition = 1300; //1247;
 
     public static double shoulderEncoderBottom = 1;
     public static double shoulderEncoderMax = 350;

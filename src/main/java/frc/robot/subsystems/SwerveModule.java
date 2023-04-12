@@ -53,7 +53,8 @@ public class SwerveModule extends SubsystemBase {
 
   // private double loopCounter = 0;
   // private static final double MAXSTEERERROR = 5;
-  private static final double STEER_P = 3.0, STEER_I = 0.0, STEER_D = 0.1;
+  //private static final double STEER_P = 3.0, STEER_I = 0.0, STEER_D = 0.1;
+  private static final double STEER_P = 6.0, STEER_I = 0.0, STEER_D = 0.2;
   private static final int STATUS_FRAME_PERIOD = 5;
 
   public double encoderCountPerRotation = 1024;
@@ -67,7 +68,8 @@ public class SwerveModule extends SubsystemBase {
 		driveMotor.restoreFactoryDefaults();
 		driveMotor.setInverted(invertDrive);// setInverted reverses the both the motor and the encoder direction.
 		driveMotor.setOpenLoopRampRate(RAMP_RATE);// This provides a motor ramp up time to prevent brown outs.
-		driveMotor.setIdleMode(IdleMode.kCoast);
+		//driveMotor.setIdleMode(IdleMode.kCoast);
+    driveMotor.setIdleMode(IdleMode.kBrake);
     driveMotor.setSmartCurrentLimit(55);
  
 
