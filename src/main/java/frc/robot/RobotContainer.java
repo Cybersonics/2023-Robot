@@ -95,7 +95,10 @@ public class RobotContainer {
         () -> _drive.toggleMode()
       ));
 
-    opController.a().whileTrue(new ArmPositionCommand(_arm, ArmConstants.armShoulderPosition, ArmConstants.armExtensionPosition, 3));
+    opController.a().whileTrue(new ArmPositionCommand(_arm, ArmConstants.armShoulderPosition, ArmConstants.armExtensionPosition, true, 3));
+
+    opController.pov(0).whileTrue(new ArmPositionCommand(_arm, 287, ArmConstants.armExtensionPosition, false, 3));
+    opController.pov(180).whileTrue(new ArmPositionCommand(_arm, 332, ArmConstants.armExtensionPosition, false, 3));
   }
 
   /**

@@ -97,11 +97,11 @@ public final class Autos {
 
       overRampDriveCommand,
       new ParallelCommandGroup(
-        new ArmPositionCommand(arm, ArmConstants.armShoulderPosition, ArmConstants.armExtensionPosition, 2),
+        new ArmPositionCommand(arm, ArmConstants.armShoulderPosition, ArmConstants.armExtensionPosition, true, 2),
         new IntakeCubeCommand(intake, false, 1.5)),
       new ParallelCommandGroup(
         backToRampDriveCommand,
-        new ArmPositionCommand(arm, ArmConstants.armShoulderPosition, ArmConstants.extensionEncoderIn, 2)),
+        new ArmPositionCommand(arm, ArmConstants.armShoulderPosition, ArmConstants.extensionEncoderIn, true, 2)),
       new DriveBalanceCommand(drive, gyro)
     );
   }
@@ -130,11 +130,11 @@ public final class Autos {
 
       overRampDriveCommand,
       new ParallelCommandGroup(
-        new ArmPositionCommand(arm, ArmConstants.armShoulderPosition, ArmConstants.armExtensionPosition, 2),
+        new ArmPositionCommand(arm, ArmConstants.armShoulderPosition, ArmConstants.armExtensionPosition+10, true, 2),
         new IntakeCubeCommand(intake, false, 1.5)),
       new ParallelCommandGroup(
         backToRampDriveCommand,
-        new ArmPositionCommand(arm, ArmConstants.armShoulderPosition, ArmConstants.extensionEncoderIn, 2)),
+        new ArmPositionCommand(arm, ArmConstants.armShoulderPosition, ArmConstants.extensionEncoderIn, true, 2)),
       new DriveBalanceCommand(drive, gyro)
     );
   }
@@ -166,7 +166,7 @@ public final class Autos {
       cubeDropDriveCommand,
       new ParallelCommandGroup(
         exitCommunityDriveCommand,
-        new ArmPositionCommand(arm, ArmConstants.armShoulderPosition, ArmConstants.armExtensionPosition, 3),
+        new ArmPositionCommand(arm, ArmConstants.armShoulderPosition, ArmConstants.armExtensionPosition, true, 3),
         new IntakeConeCommand(intake, false, 3.5)
       ),
       backToRampDriveCommand,
@@ -197,7 +197,7 @@ public final class Autos {
       cubeDropDriveCommand,
       new ParallelCommandGroup(
         exitCommunityDriveCommand,
-        new ArmPositionCommand(arm, ArmConstants.armShoulderPosition, ArmConstants.armExtensionPosition, 3),
+        new ArmPositionCommand(arm, ArmConstants.armShoulderPosition, ArmConstants.armExtensionPosition, true, 3),
         new IntakeConeCommand(intake, false, 3.5)
       )
     );
@@ -263,14 +263,14 @@ public final class Autos {
       cubeDropDriveCommand,
       new ParallelCommandGroup(
         driveSecondCubeCommand,
-        new ArmPositionCommand(arm, ArmConstants.armShoulderPosition, ArmConstants.armExtensionPosition, 3),
+        new ArmPositionCommand(arm, ArmConstants.armShoulderPosition, ArmConstants.armExtensionPosition, true, 3),
         new IntakeCubeCommand(intake, false, 3.5)),
       // backToScoreDriveCommand,
       // new ArmPositionCommand(arm, ArmConstants.armShoulderPosition, ArmConstants.armExtensionPosition, 3),
         new ParallelCommandGroup(
           backToScoreDriveCommand,
           // Down is up for should positions
-          new ArmPositionCommand(arm, ArmConstants.armShoulderPosition - 20, ArmConstants.extensionEncoderIn, 2)),
+          new ArmPositionCommand(arm, ArmConstants.armShoulderPosition - 20, ArmConstants.extensionEncoderIn, true, 2)),
       new IntakeCubeCommand(intake, true, 2)
     );
   }
@@ -302,7 +302,7 @@ public final class Autos {
       cubeDropDriveCommand,
       new ParallelCommandGroup(
         exitCommunityDriveCommand,
-        new ArmPositionCommand(arm, ArmConstants.armShoulderPosition, ArmConstants.armExtensionPosition, 3),
+        new ArmPositionCommand(arm, ArmConstants.armShoulderPosition, ArmConstants.armExtensionPosition, true, 3),
         new IntakeCubeCommand(intake, false, 4)),
       backToRampDriveCommand,
       new DriveBalanceCommand(drive, gyro)
@@ -343,7 +343,7 @@ public final class Autos {
       cubeJigCommand, 
       beforeCableDriveCommand,
       new ParallelCommandGroup(afterCableDriveCommand,
-        new ArmPositionCommand(arm, ArmConstants.armShoulderPosition, ArmConstants.armExtensionPosition, 3),
+        new ArmPositionCommand(arm, ArmConstants.armShoulderPosition, ArmConstants.armExtensionPosition, true, 3),
         new IntakeConeCommand(intake, false, 3.5)
       )
     );

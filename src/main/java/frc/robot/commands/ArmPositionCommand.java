@@ -13,13 +13,18 @@ public class ArmPositionCommand extends CommandBase {
     private Arm _arm;
     private double _expectedShoulderPosition;
     private double _expectedExtensionPosition;
+    private boolean _extendActivate;
     private double _duration;
     private Timer _timer;
 
     private PIDController _shoulderPIDController;
-    private final double shoulderP = 0.08; //0.04;
+    private final double shoulderP = 0.06; //0.08//0.04;
     private final double shoulderI = 0.0;
     private final double shoulderD = 0.0;
+
+    // private final double shoulderP = 0.03; //0.04;
+    // private final double shoulderI = 0.03;
+    // private final double shoulderD = 0.00;
 
     private PIDController _extensionPIDController;
     private final double extensionP = 0.002;
@@ -27,11 +32,12 @@ public class ArmPositionCommand extends CommandBase {
     private final double extensionD = 0.0;
 
     /** Creates a new ArmCommand. */
-    public ArmPositionCommand(Arm arm, double shoulderPosition, double extensionPosition, double runDurationInSeconds) {
+    public ArmPositionCommand(Arm arm, double shoulderPosition, double extensionPosition, boolean extendActivate, double runDurationInSeconds) {
         this._arm = arm;
 
         this._expectedShoulderPosition = shoulderPosition;
         this._expectedExtensionPosition = extensionPosition;
+        this._extendActivate = extendActivate;
 
         this._duration = runDurationInSeconds;
 
@@ -67,7 +73,7 @@ public class ArmPositionCommand extends CommandBase {
         // System.out.println("Shoulder at position: " + _shoulderPIDController.atSetpoint());
         // System.out.println("Expected shoulder setpoint: " + _shoulderPIDController.getSetpoint());
             
-        if (_shoulderPIDController.atSetpoint()) {
+        if (_shoulderPIDController.atSetpoint() && _extendActivate) {
             if (_expectedExtensionPosition >= ArmConstants.extensionEncoderIn
                     && _expectedExtensionPosition <= ArmConstants.extensionEncoderOut) {
                 System.out.println("going to extension position: " + _expectedExtensionPosition + " at "
