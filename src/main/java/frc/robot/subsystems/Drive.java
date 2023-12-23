@@ -56,23 +56,23 @@ public class Drive extends SubsystemBase {
 	private NavXGyro _gyro;
 	private boolean _driveCorrect;
 
-	private ShuffleboardTab driveTab = Shuffleboard.getTab("DriveTab");
+	// private ShuffleboardTab driveTab = Shuffleboard.getTab("DriveTab");
 
-	private GenericEntry lfSetAngle = driveTab.addPersistent("LF Set Angle", 0)
-			.withWidget(BuiltInWidgets.kNumberSlider).withProperties(Map.of("min", -180, "max", 180, "center", 0))
-			.withPosition(0, 0).withSize(3, 1).getEntry();
+	// private GenericEntry lfSetAngle = driveTab.addPersistent("LF Set Angle", 0)
+	// 		.withWidget(BuiltInWidgets.kNumberSlider).withProperties(Map.of("min", -180, "max", 180, "center", 0))
+	// 		.withPosition(0, 0).withSize(3, 1).getEntry();
 
-	private GenericEntry lbSetAngle = driveTab.addPersistent("LB Set Angle", 0)
-			.withWidget(BuiltInWidgets.kNumberSlider).withProperties(Map.of("min", -180, "max", 180, "center", 0))
-			.withPosition(0, 1).withSize(3, 1).getEntry();
+	// private GenericEntry lbSetAngle = driveTab.addPersistent("LB Set Angle", 0)
+	// 		.withWidget(BuiltInWidgets.kNumberSlider).withProperties(Map.of("min", -180, "max", 180, "center", 0))
+	// 		.withPosition(0, 1).withSize(3, 1).getEntry();
 
-	private GenericEntry rfSetAngle = driveTab.addPersistent("RF Set Angle", 0)
-			.withWidget(BuiltInWidgets.kNumberSlider).withProperties(Map.of("min", -180, "max", 180, "center", 0))
-			.withPosition(4, 0).withSize(3, 1).getEntry();
+	// private GenericEntry rfSetAngle = driveTab.addPersistent("RF Set Angle", 0)
+	// 		.withWidget(BuiltInWidgets.kNumberSlider).withProperties(Map.of("min", -180, "max", 180, "center", 0))
+	// 		.withPosition(4, 0).withSize(3, 1).getEntry();
 
-	private GenericEntry rbSetAngle = driveTab.addPersistent("RBack Set Angle", 0)
-			.withWidget(BuiltInWidgets.kNumberSlider).withProperties(Map.of("min", -180, "max", 180, "center", 0))
-			.withPosition(4, 2).withSize(3, 1).getEntry();
+	// private GenericEntry rbSetAngle = driveTab.addPersistent("RBack Set Angle", 0)
+	// 		.withWidget(BuiltInWidgets.kNumberSlider).withProperties(Map.of("min", -180, "max", 180, "center", 0))
+	// 		.withPosition(4, 1).withSize(3, 1).getEntry();
 
 	private final SwerveDriveOdometry odometer;
 
@@ -87,16 +87,16 @@ public class Drive extends SubsystemBase {
 		this._gyro = gyro;
 
 		frontLeft = new SwerveModule(DriveConstants.FrontLeftSteer, DriveConstants.FrontLeftDrive, invertDrive,
-				invertSteer);
+				invertSteer, DriveConstants.frontLeft);
 
 		backLeft = new SwerveModule(DriveConstants.BackLeftSteer, DriveConstants.BackLeftDrive, invertDrive,
-				invertSteer);
+				invertSteer, DriveConstants.backLeft);
 
 		frontRight = new SwerveModule(DriveConstants.FrontRightSteer, DriveConstants.FrontRightDrive, invertDrive,
-				invertSteer);
+				invertSteer, DriveConstants.frontRight);
 
 		backRight = new SwerveModule(DriveConstants.BackRightSteer, DriveConstants.BackRightDrive, invertDrive,
-				invertSteer);
+				invertSteer, DriveConstants.backRight);
 
 		odometer = new SwerveDriveOdometry(DriveConstants.FrameConstants.kDriveKinematics,
 		this._gyro.getNavXRotation2D(), getPositions());
@@ -180,10 +180,10 @@ public class Drive extends SubsystemBase {
 		 * encoder to zero.
 		 */
 
-		double lfOffset = lfSetAngle.getDouble(0.0);
-		double lbOffset = lbSetAngle.getDouble(0.0);
-		double rfOffset = rfSetAngle.getDouble(0.0);
-		double rbOffset = rbSetAngle.getDouble(0.0);
+		// double lfOffset = lfSetAngle.getDouble(0.0);
+		// double lbOffset = lbSetAngle.getDouble(0.0);
+		// double rfOffset = rfSetAngle.getDouble(0.0);
+		// double rbOffset = rbSetAngle.getDouble(0.0);
 
 		/*
 		 * When drives are mechanically calibrated for zero position on encoders they
@@ -222,10 +222,10 @@ public class Drive extends SubsystemBase {
 		 * Positive Y is now left. Positive X is forward. Positive rotation is
 		 * counter-clockwise.
 		 */
-		double angleFL = angle(B, C) + lfOffset + DriveConstants.FrontLeftEncoderOffset;//+ lfOffset;
-		double angleBL = angle(A, C) + lbOffset + DriveConstants.BackLeftEncoderOffset;// + lbOffset;
-		double angleFR = angle(B, D) + rfOffset + DriveConstants.FrontRightEncoderOffset;// + rfOffset;
-		double angleBR = angle(A, D) + rbOffset + DriveConstants.BackRightEncoderOffset;// + rbOffset;
+		double angleFL = angle(B, C);// + lfOffset + DriveConstants.FrontLeftEncoderOffset;//+ lfOffset;
+		double angleBL = angle(A, C);// + lbOffset + DriveConstants.BackLeftEncoderOffset;// + lbOffset;
+		double angleFR = angle(B, D);// + rfOffset + DriveConstants.FrontRightEncoderOffset;// + rfOffset;
+		double angleBR = angle(A, D);// + rbOffset + DriveConstants.BackRightEncoderOffset;// + rbOffset;
 
 		/*
 		 * Compute the maximum speed so that we can scale all the speeds to the range
@@ -233,9 +233,9 @@ public class Drive extends SubsystemBase {
 		 */
 		double maxSpeed = Collections.max(Arrays.asList(speedFL, speedBL, speedFR, speedBR, 1.0));
 
-		SmartDashboard.putNumber("angleLF", angleFL);
-		SmartDashboard.putNumber("speedLF", speedFL);
-		SmartDashboard.putNumber("CurAngle FL", frontLeft.getSteerEncDeg());
+		//SmartDashboard.putNumber("angleLF", angleFL);
+		//SmartDashboard.putNumber("speedLF", speedFL);
+		//SmartDashboard.putNumber("CurAngle FL", frontLeft.getSteerEncDeg());
 		// SmartDashboard.putNumber("angleRF", angleFR);
 		// SmartDashboard.putNumber("speedRF", speedFR);
 		// SmartDashboard.putNumber("CurAngle FR", frontRight.getSteerEncDeg());

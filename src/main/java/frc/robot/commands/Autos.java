@@ -49,7 +49,7 @@ public final class Autos {
     // 3);
 
     List<PathPlannerTrajectory> pathTrajectoryGroup = PathPlanner.loadPathGroup("Center-Ramp",
-        new PathConstraints(1, 1), new PathConstraints(1, 1), new PathConstraints(1.5, 1));
+        new PathConstraints(1, 1), new PathConstraints(2, 1.5), new PathConstraints(2, 1.75));
     PPSwerveControllerCommand cubeDropDriveCommand = getTrajectoryCommand(pathTrajectoryGroup.get(0), true, drive);
     PPSwerveControllerCommand overRampDriveCommand = getTrajectoryCommand(pathTrajectoryGroup.get(1), true, drive);
     PPSwerveControllerCommand backToRampDriveCommand = getTrajectoryCommand(pathTrajectoryGroup.get(2), true, drive);
@@ -112,7 +112,7 @@ public final class Autos {
     // 3);
 
     List<PathPlannerTrajectory> pathTrajectoryGroup = PathPlanner.loadPathGroup("Center-Ramp-Cube",
-        new PathConstraints(2, 1.5), new PathConstraints(2, 1.75));
+        new PathConstraints(1.5, 1.5), new PathConstraints(2, 1.75));//2,1.5
     PPSwerveControllerCommand overRampDriveCommand = getTrajectoryCommand(pathTrajectoryGroup.get(0), true, drive);
     PPSwerveControllerCommand backToRampDriveCommand = getTrajectoryCommand(pathTrajectoryGroup.get(1), true, drive);
 
@@ -130,7 +130,7 @@ public final class Autos {
 
       overRampDriveCommand,
       new ParallelCommandGroup(
-        new ArmPositionCommand(arm, ArmConstants.armShoulderPosition, ArmConstants.armExtensionPosition+10, true, 2),
+        new ArmPositionCommand(arm, ArmConstants.armShoulderPosition, ArmConstants.armExtensionPosition+20, true, 2),
         new IntakeCubeCommand(intake, false, 1.5)),
       new ParallelCommandGroup(
         backToRampDriveCommand,

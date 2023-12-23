@@ -68,6 +68,12 @@ public final class Constants {
     public static final int BackRightSteer = 13;
     public static final int BackRightDrive = 3;
     public static final int BackRightEncoderOffset = 0;
+    
+    public static final shuffleBoardDrive frontLeft = new shuffleBoardDrive("LF Set Angle", 0, 0);
+    public static final shuffleBoardDrive backLeft = new shuffleBoardDrive("LB Set Angle", 0, 1);
+
+    public static final shuffleBoardDrive frontRight = new shuffleBoardDrive("RF Set Angle", 4, 0);
+    public static final shuffleBoardDrive backRight = new shuffleBoardDrive("RBack Set Angle", 4, 1);
 
     public static final class ModuleConstants {
       public static final double kWheelDiameterMeters = Units.inchesToMeters(4);
@@ -119,4 +125,17 @@ public final class Constants {
   public static final class IntakeConstants {
     public static final int intakeMotorId = 25;
   }
+
+  public static class shuffleBoardDrive {
+    public String drivePosition;
+    public int colPos;
+    public int rowPos;
+
+    public shuffleBoardDrive(String drivePosition, int colPos, int rowPos){
+      this.drivePosition = drivePosition;
+      this.colPos = colPos;
+      this.rowPos = rowPos;
+    }
+  }
+
 }

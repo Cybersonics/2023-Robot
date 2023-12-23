@@ -22,9 +22,19 @@ import com.revrobotics.RelativeEncoder;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import frc.robot.Constants.DriveConstants;
+import frc.robot.Constants.shuffleBoardDrive;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.networktables.GenericEntry;
+import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Map;
 
 //import frc.robot.subsystems.setSwerveModule;
 
@@ -61,7 +71,18 @@ public class SwerveModule extends SubsystemBase {
 
   private boolean _driveCorrect;
 
-  public SwerveModule(int steerNum, int driveNum, boolean invertDrive, boolean invertSteer) {
+  private shuffleBoardDrive drivePos;
+  private ShuffleboardTab driveTab = Shuffleboard.getTab("DriveTab");
+  private GenericEntry setAngleOffset;
+
+  public SwerveModule(int steerNum, int driveNum, boolean invertDrive, boolean invertSteer, shuffleBoardDrive drivePos) {
+
+    this.drivePos = drivePos;
+
+    setAngleOffset = driveTab.addPersistent(this.drivePos.drivePosition, 0)
+    .withWidget(BuiltInWidgets.kNumberSlider).withProperties(Map.of("min", -180, "max", 180, "center", 0))
+    .withPosition(this.drivePos.colPos, this.drivePos.rowPos).withSize(3, 1).getEntry();
+    
 
     //Create and configure a new Drive motor
     driveMotor = new CANSparkMax(driveNum, MotorType.kBrushless);
@@ -112,11 +133,24 @@ public class SwerveModule extends SubsystemBase {
     //double targetAngle = angle; //-angle;
     //double deltaDegrees = targetAngle - currentAngle;
 
-    double currentPosition = steerMotor.getSelectedSensorPosition(0);
-    double currentAngle = (currentPosition * 360.0 / this.encoderCountPerRotation) % 360.0;
-    double targetAngle = -angle; //-angle;
-    double deltaDegrees = targetAngle - currentAngle;
+    //double currentPosition = steerMotor.getSelectedSensorPosition(0);
 
+    /*Get the current angle of the absolute encoder in raw encoder format and
+     * then convert the raw angle into degrees. Use the Modulus % function
+     * to find the current pivot position inside of the 0 to 360 degree range.
+     * Get the offset angle from the dashboard to "trim" the position of the pivots.
+     * 
+     * The target angle is then used to calculate how far the pivot needs to turn 
+     * based on the difference of the target angle and the current angle.
+     */
+    double currentPosition = getSteerEncoder();
+    double currentAngle = (currentPosition * 360.0 / this.encoderCountPerRotation) % 360.0;
+    double targetAngle = -angle + getAngleOffset(); //-angle;
+    double deltaDegrees = targetAngle - currentAngle;
+    
+    SmartDashboard.putNumber(this.drivePos.drivePosition +" Raw Angle", currentAngle);
+    SmartDashboard.putNumber(this.drivePos.drivePosition +" Offset Angle", getAngleOffset());
+    SmartDashboard.putNumber(this.drivePos.drivePosition +" cur Angle", targetAngle);
     /* 
         The gyro reads in degrees from 0 to 360 where the 0/360 degree position is straight ahead.
         The swerve equations generate position angles from -180 to 180 degrees where the 
@@ -206,18 +240,40 @@ public class SwerveModule extends SubsystemBase {
     driveMotor.stopMotor();
   }
 
+  /*
+   *  Get the current angle of the pivot in encoder counts 
+   */
   public double getSteerEncoder(){
-    double curPosition = steerMotor.getSelectedSensorPosition(0);
-    return curPosition;
+    double curPositionRaw = steerMotor.getSelectedSensorPosition(0);
+    return curPositionRaw;
+  }
+
+  /*
+   * Get the "Trimming" offset for the pivot from the dashboard.
+   * The trimming offset is used to fine tune the pivot angles
+   * so they are all facing the same way. 
+   */
+  public double getAngleOffset(){
+
+    double angleOffset = setAngleOffset.getDouble(0.0);
+    return angleOffset;
   }
   
   public double getSteerEncDeg(){
-    return (steerMotor.getSelectedSensorPosition() * 360.0 / this.encoderCountPerRotation) % 360.0;
+    return ((getSteerEncoder() * 360.0) / this.encoderCountPerRotation) % 360.0;
   }
   
+  /*
+   * Get the raw pivot angle and add the "trimming" offset from the 
+   * dashboard. Convert the pivot angle to radians to be used by the 
+   * autonomous routines. The getState and getPosition are used
+   * by the SweveModuleState system employed by WPILib.
+   */
   public double getTurningPosition() {
     double steerEncoderRaw = getSteerEncoder();
-    double turningEncoder = (steerEncoderRaw / this.encoderCountPerRotation) * 2 * Math.PI;
+    double angleOffset = (getAngleOffset() * this.encoderCountPerRotation) / 360;
+    double steerEncoderOffset = steerEncoderRaw + angleOffset;
+    double turningEncoder = (steerEncoderOffset / this.encoderCountPerRotation) * 2 * Math.PI;
     return -turningEncoder; //Invert Encoder for odometry as wpilib treats encoders backwards.
   }
 

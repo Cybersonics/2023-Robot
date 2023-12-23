@@ -8,6 +8,7 @@ import com.revrobotics.CANSparkMax.IdleMode;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
+import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.subsystems.Drive;
 import frc.robot.subsystems.NavXGyro;
 
@@ -16,6 +17,7 @@ public class DriveCommand extends CommandBase {
   private Drive _drive;
   private CommandJoystick leftStick;
   private CommandJoystick rightStick;
+
   private NavXGyro _navXGyro;
 
   public static final double OMEGA_SCALE = 1.0 / 45.0;//30
@@ -35,6 +37,7 @@ public class DriveCommand extends CommandBase {
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(drive);
   }
+
 
   // Called when the command is initially scheduled.
   @Override
@@ -64,7 +67,7 @@ public class DriveCommand extends CommandBase {
     // double stickForward = this.driveController.getLeftY();
     // double stickStrafe = this.driveController.getLeftX();
     // double stickOmega = (this.driveController.getRightX());
-    
+
     double stickForward = -this.leftStick.getY();
     double stickStrafe = -this.leftStick.getX();
     double stickOmega = -this.rightStick.getX();
@@ -98,9 +101,11 @@ public class DriveCommand extends CommandBase {
     if (Math.abs(omega) < DEADZONE_RSTICK * OMEGA_SCALE)
       omega = 0.0;
     boolean stickFieldCentric = leftStick.trigger().getAsBoolean();
-    boolean driveCorrect = rightStick.trigger().getAsBoolean();
+    //boolean driveCorrect = rightStick.trigger().getAsBoolean();
+    boolean driveCorrect = false;
 
     if (!stickFieldCentric) {
+    
       /*
           When the Left Joystick trigger is not pressed, The robot is in Field Centric Mode.
           The calculations correct the forward and strafe values for field centric attitude.
@@ -120,9 +125,9 @@ public class DriveCommand extends CommandBase {
           wpilib.
       */
 
-      // final double temp = forward * Math.cos(originCorrection) - strafe * Math.sin(originCorrection);
-      // strafe = strafe * Math.cos(originCorrection) + forward * Math.sin(originCorrection);
-      // forward = temp;
+       //final double temp = forward * Math.cos(originCorrection) - strafe * Math.sin(originCorrection);
+       //strafe = strafe * Math.cos(originCorrection) + forward * Math.sin(originCorrection);
+       //forward = temp;
 
       /*
           Field centric code only affects the forward and strafe action, not rotation. To perform field 

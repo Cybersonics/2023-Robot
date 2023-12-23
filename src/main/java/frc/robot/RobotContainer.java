@@ -45,6 +45,7 @@ public class RobotContainer {
   
   public final CommandJoystick leftStick = new CommandJoystick(OperatorConstants.LeftStick);
   public final CommandJoystick rightStick = new CommandJoystick(OperatorConstants.RightStick);
+  //public final CommandXboxController driveController = new CommandXboxController(OperatorConstants.LeftStick);
   public final CommandXboxController opController = new CommandXboxController(OperatorConstants.OpController);
 
   // Setup Sendable chooser for picking autonomous program in SmartDashboard
@@ -56,6 +57,7 @@ public class RobotContainer {
   public RobotContainer() {
 
     CommandScheduler.getInstance()
+        //.setDefaultCommand(_drive, new DriveCommand(_drive, driveController, _gyro));
         .setDefaultCommand(_drive, new DriveCommand(_drive, leftStick, rightStick, _gyro));
 
     CommandScheduler.getInstance()
@@ -89,11 +91,11 @@ public class RobotContainer {
     // Reset NavX
     leftStick.button(7).onTrue(new InstantCommand(() -> _gyro.zeroNavHeading(), _gyro));
 
-    rightStick.button(3).toggleOnTrue(new ConditionalCommand(
-        new InstantCommand(() -> _drive.setDriveModeBrake()),
-        new InstantCommand(() -> _drive.setDriveModeCoast()),
-        () -> _drive.toggleMode()
-      ));
+     rightStick.button(3).toggleOnTrue(new ConditionalCommand(
+         new InstantCommand(() -> _drive.setDriveModeBrake()),
+         new InstantCommand(() -> _drive.setDriveModeCoast()),
+         () -> _drive.toggleMode()
+       ));
 
     opController.a().whileTrue(new ArmPositionCommand(_arm, ArmConstants.armShoulderPosition, ArmConstants.armExtensionPosition, true, 3));
 
