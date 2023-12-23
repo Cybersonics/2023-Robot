@@ -148,9 +148,9 @@ public class SwerveModule extends SubsystemBase {
     double targetAngle = -angle + getAngleOffset(); //-angle;
     double deltaDegrees = targetAngle - currentAngle;
     
-    SmartDashboard.putNumber(this.drivePos.drivePosition +" Raw Angle", currentAngle);
-    SmartDashboard.putNumber(this.drivePos.drivePosition +" Offset Angle", getAngleOffset());
-    SmartDashboard.putNumber(this.drivePos.drivePosition +" cur Angle", targetAngle);
+    // SmartDashboard.putNumber(this.drivePos.drivePosition +" Raw Angle", currentAngle);
+    // SmartDashboard.putNumber(this.drivePos.drivePosition +" Offset Angle", getAngleOffset());
+    // SmartDashboard.putNumber(this.drivePos.drivePosition +" cur Angle", targetAngle);
     /* 
         The gyro reads in degrees from 0 to 360 where the 0/360 degree position is straight ahead.
         The swerve equations generate position angles from -180 to 180 degrees where the 
